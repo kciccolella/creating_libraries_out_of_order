@@ -16,7 +16,7 @@
       if (dependencies.every(isInLibrary)) {
         var loadedDependencies = dependencies.map(function(dependency) {
           return libraryStorage[dependency];
-        })
+        });
         libraryStorage[libraryName] = callback.apply(null, loadedDependencies);
       } else {
         incompleteLibraries.push([libraryName, dependencies, callback]);
@@ -35,7 +35,7 @@
 
   window.librarySystem = librarySystem;
 
-}) ();
+})();
 
 
 tests({
