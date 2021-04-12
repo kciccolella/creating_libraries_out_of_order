@@ -5,32 +5,21 @@
 (function() {
 
   var libraryStorage = {};
-  var incompleteLibraries = [];
+  var loadedLibraries = {};
 
   function librarySystem(libraryName, dependencies, callback) {
-    function isInLibrary(dependency) {
-      return libraryStorage[dependency];
-    }
-
     if (arguments.length > 1) {
-      if (dependencies.every(isInLibrary)) {
-        var loadedDependencies = dependencies.map(function(dependency) {
-          return libraryStorage[dependency];
-        });
-        libraryStorage[libraryName] = callback.apply(null, loadedDependencies);
-      } else {
-        incompleteLibraries.push([libraryName, dependencies, callback]);
-      }
+      libraryStorage[libraryName] = [dependencies, callback];
     } else {
-      return libraryStorage[libraryName];
-    }
-
-    incompleteLibraries.forEach(function(element) {
-      if (!libraryStorage[element[0]] && element[1].every(isInLibrary)) {
-        librarySystem.apply(null, element);
-        incompleteLibraries.splice(element, 1);
+      if (loadedLibraries[libraryName]) {
+        return loadedLibraries[libraryName];
+      } else {
+        var _dependencies = libraryStorage[libraryName][0];
+        var _callback = libraryStorage[libraryName][1];
+        loadedLibraries[libraryName] = _callback(..._dependencies.map(dep => librarySystem(dep)));
+        return loadedLibraries[libraryName];
       }
-    });
+    }
   }
 
   window.librarySystem = librarySystem;
