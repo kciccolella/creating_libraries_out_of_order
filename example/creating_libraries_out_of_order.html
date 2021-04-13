@@ -16,7 +16,10 @@
       } else {
         var _dependencies = libraryStorage[libraryName][0];
         var _callback = libraryStorage[libraryName][1];
-        loadedLibraries[libraryName] = _callback(..._dependencies.map(dep => librarySystem(dep)));
+        var loadedDependencies = _dependencies.map(function(dep) {
+         return librarySystem(dep);
+        });
+        loadedLibraries[libraryName] = _callback.apply(null, loadedDependencies);
         return loadedLibraries[libraryName];
       }
     }
