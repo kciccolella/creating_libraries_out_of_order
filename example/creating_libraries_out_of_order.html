@@ -9,13 +9,16 @@
 
   function librarySystem(libraryName, dependencies, callback) {
     if (arguments.length > 1) {
-      libraryStorage[libraryName] = [dependencies, callback];
+      libraryStorage[libraryName] = {
+        dependencies: dependencies,
+        callback: callback
+      };
     } else {
       if (loadedLibraries[libraryName]) {
         return loadedLibraries[libraryName];
       } else {
-        var _dependencies = libraryStorage[libraryName][0];
-        var _callback = libraryStorage[libraryName][1];
+        var _dependencies = libraryStorage[libraryName].dependencies;
+        var _callback = libraryStorage[libraryName].callback;
         var loadedDependencies = _dependencies.map(function(dep) {
          return librarySystem(dep);
         });
