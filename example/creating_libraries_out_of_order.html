@@ -20,7 +20,7 @@
         var _dependencies = libraryStorage[libraryName].dependencies;
         var _callback = libraryStorage[libraryName].callback;
         var loadedDependencies = _dependencies.map(function(dep) {
-         return librarySystem(dep);
+          return librarySystem(dep);
         });
         loadedLibraries[libraryName] = _callback.apply(null, loadedDependencies);
         return loadedLibraries[libraryName];
