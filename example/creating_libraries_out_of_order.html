@@ -17,12 +17,12 @@
       if (loadedLibraries[libraryName]) {
         return loadedLibraries[libraryName];
       } else {
-        var _dependencies = libraryStorage[libraryName].dependencies;
-        var _callback = libraryStorage[libraryName].callback;
-        var loadedDependencies = _dependencies.map(function(dep) {
+        var currentLibraryDependencies = libraryStorage[libraryName].dependencies;
+        var currentLibraryCallback = libraryStorage[libraryName].callback;
+        var loadedDependencies = currentLibraryDependencies.map(function(dep) {
           return librarySystem(dep);
         });
-        loadedLibraries[libraryName] = _callback.apply(null, loadedDependencies);
+        loadedLibraries[libraryName] = currentLibraryCallback.apply(null, loadedDependencies);
         return loadedLibraries[libraryName];
       }
     }
